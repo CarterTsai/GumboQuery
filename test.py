@@ -1,9 +1,13 @@
-import gumbo
+from lib.GetElement import GumboPlus
+
+
 html = open('test.html')
 
-soup = gumbo.soup_parse(html.read())
+parse = GumboPlus("<h1> 123 </h1>");
 
-th = soup.findAll('th')
+#soup = gumbo.soup_parse(html.read())
+
+#th = soup.findAll('th')
 
 def _findAttr(elem, attrName, attrValue):
     _attrs_node = []
@@ -25,7 +29,7 @@ def findTitle(elem, titleName):
     return _findAttr(th, 'title', titleName)
 
 
-print findTitle('td', 'Minutes Played')
+#print findTitle('td', 'Minutes Played')
 #classNode = findClass("nba-stat-type")
 
 #for d in classNode:
