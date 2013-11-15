@@ -6,7 +6,7 @@ class GumboPlus:
         print "test"
         self.soup = gumbo.soup_parse(data)
 
-    def _findAttr(elem, attrName, attrValue):
+    def _findAttr(self, elem, attrName, attrValue):
         _attrs_node = []
         for d in elem:
             try:
@@ -18,9 +18,9 @@ class GumboPlus:
         return _attrs_node
 
     def findClass(self, elem, className):
-        th = self.soup.findAll(elem)
-        return self._findAttr(th, 'class', className)
+        all_elem = self.soup.findAll(elem)
+        return self._findAttr(all_elem, 'class', className)
 
     def findTitle(self, elem, titleName):
-        th = self.soup.findAll(elem)
-        return self._findAttr(th, 'title', titleName)
+        all_elem = self.soup.findAll(elem)
+        return self._findAttr(all_elem, 'title', titleName)
