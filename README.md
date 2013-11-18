@@ -24,7 +24,7 @@ GumboPlus is an implementation of python of Gumbo to provide rich operate interf
     
 ## Example
 
-    from lib.GetElement import GumboPlus
+    from lib.GetElement import GumboQuery
     q = GumboQuery("<div class="show">2</div>")
     tag = q.query(".show")
     print tag[0].contents[0]

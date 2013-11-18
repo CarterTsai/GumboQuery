@@ -10,13 +10,13 @@ class GumboQueryTest(unittest.TestCase):
         testHtml = '<h1 class="ss cc">123</h1>' \
                    '<div class="ss">456<div>' \
                    '<h1 class="ss" title="cc" >345</h1>' \
-                   '<div class="myClass" title="good" >345</h1>' \
-                   '<div id="myID" title="best" >Good Idea</h1>'
+                   '<div class="myClass" title="good" >345</div>' \
+                   '<div id="myID" title="best" >Good Idea</div>'
         self.q = GumboQuery(testHtml)
 
     def test_query_class(self):
         x = self.q.query('.myClass')
-        self.assertEqual(x[0].contents[0], unicode('test123'))
+        self.assertEqual(x[0].contents[0], unicode('345'))
 
     def test_query_id(self):
         x = self.q.query('#myID')
@@ -26,6 +26,9 @@ class GumboQueryTest(unittest.TestCase):
         x = self.q.findClass('h1', 'ss')
         self.assertEqual(x[0].contents[0], unicode('123'))
 
+    def test_find_id(self):
+        x = self.q.findID('div', 'myID')
+        self.assertEqual(x[0].contents[0], unicode('Good Idea'))
     def test_find_title(self):
         x = self.q.findTitle('h1', 'cc')
         self.assertEqual(x[0].contents[0], unicode('345'))
