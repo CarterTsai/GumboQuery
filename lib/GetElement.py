@@ -1,7 +1,6 @@
 import gumbo
 
-
-class GumboPlus:
+class GumboQuery:
     def __init__(self, data):
         print "test"
         self.soup = gumbo.soup_parse(data)
@@ -24,3 +23,6 @@ class GumboPlus:
     def findTitle(self, elem, titleName):
         all_elem = self.soup.findAll(elem)
         return self._findAttr(all_elem, 'title', titleName)
+
+    def query(self, queryString):
+        pass

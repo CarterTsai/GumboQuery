@@ -1,5 +1,5 @@
 
-GumboPlus
+GumboQuery
 ------------
 GumboPlus is an implementation of python of Gumbo to provide rich operate interface.
 
@@ -25,8 +25,8 @@ GumboPlus is an implementation of python of Gumbo to provide rich operate interf
 ## Example
 
     from lib.GetElement import GumboPlus
-    soup = GumboPlus("<div class="show">2</div>")
-    tag = soup.findClass("div", "show")
+    q = GumboQuery("<div class="show">2</div>")
+    tag = q.query(".show")
     print tag[0].contents[0]
     # 2 will  print on terminal
     
