@@ -31,8 +31,8 @@ class GumboQuery:
 
     def query(self, queryString):
         elem = self.q.findAll()
-        selectClass = re.findall("\.(\w+)", queryString)
-        selectID = re.findall("\#(\w+)", queryString)
+        selectClass = re.findall("\.([-\w]+)", queryString)
+        selectID = re.findall("\#([-\w]+)", queryString)
         result = []
 
         if len(selectClass) != 0:
