@@ -33,6 +33,7 @@ class GumboQuery:
         elem = self.q.findAll()
         selectClass = re.findall("\.([-\w]+)", queryString)
         selectID = re.findall("\#([-\w]+)", queryString)
+        selectElement = re.findall("([-\w]+)", queryString)
         result = []
 
         if len(selectClass) != 0:
@@ -45,4 +46,8 @@ class GumboQuery:
                 _tmp = self._findAttr(e, 'id', selectID[0])
                 if len(_tmp) != 0:
                     result.append(_tmp[0])
+        if len(selectElement) != 0:
+            _tmp = self.q.findAll(selectElement[0])
+            if len(_tmp) != 0:
+                result =  _tmp
         return result
