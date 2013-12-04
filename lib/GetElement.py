@@ -1,10 +1,26 @@
 import gumbo
 import re
+import urllib2
+import types
+
 
 class GumboQuery:
     def __init__(self, data):
-        print "test"
-        self.q = gumbo.soup_parse(data)
+        try:
+            if not self._isUrl(data):
+                self.setHtml(data)
+        except TypeError:
+            pass
+
+    # private
+    def _isUrl(self, url):
+        isUrl = re.match('^http', url)
+        if not isinstance(isUrl, types.NoneType):
+            response = urllib2.urlopen(url)
+            self.q = gumbo.soup_parse(response.read())
+            return True
+        else:
+            return False
 
     def _findAttr(self, elem, attrName, attrValue):
         _attrs_node = []
@@ -13,9 +29,16 @@ class GumboQuery:
                 _attrs = dict(d.attrs)[attrName]
                 if attrValue in _attrs:
                     _attrs_node.append(d)
-            except (KeyError, AttributeError) as e:
+            except (KeyError, AttributeError):
                 pass
         return _attrs_node
+
+    # public
+    def setHtml(self, html):
+        self.q = gumbo.soup_parse(html)
+
+    def setUrl(self, url):
+        return self._isUrl(url)
 
     def findClass(self, elem, className):
         all_elem = self.q.findAll(elem)
@@ -49,5 +72,5 @@ class GumboQuery:
         if len(selectElement) != 0:
             _tmp = self.q.findAll(selectElement[0])
             if len(_tmp) != 0:
-                result =  _tmp
+                result = _tmp
         return result

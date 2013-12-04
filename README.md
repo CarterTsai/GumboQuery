@@ -25,11 +25,19 @@ GumboPlus is an implementation of python of Gumbo to provide rich operate interf
 ## Example
 
     from lib.GetElement import GumboQuery
-    q = GumboQuery("<div class="show">2</div>")
-    tag = q.query(".show")
-    print tag[0].contents[0]
-    # 2 will  print on terminal
+    q = GumboQuery('<div><a>123</a><div class="gg">gg</div><div id="dd">dd</div></div>')
     
+    You can do 
+    q.query('div') // query element
+    q.query('.gg') // query class
+    q.query('#dd') // query id
+    
+    // set url to parse 
+    q.setUrl("http://www.google.com")
+    // set Html source 
+    q.setHtml("<div><h1>333</h1></div>")
+
+
 ## Testing Website
 http://sports.yahoo.com/nba/utah-jazz-toronto-raptors-2013110928/
 
