@@ -42,9 +42,9 @@ class GumboQuery:
                 if len(_tmp) != 0:
                     result.append(_tmp[0])
         else:
-            _tmp = self.q.findAll(elemName)
-            if len(_tmp) != 0:
-                result = _tmp
+            elem = self.q.findAll(elemName)
+            if len(elem) != 0:
+                result = elem
 
         return result
 
