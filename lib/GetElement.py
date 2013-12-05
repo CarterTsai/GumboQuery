@@ -33,6 +33,29 @@ class GumboQuery:
                 pass
         return _attrs_node
 
+    def _selector(self, selectType, elemName):
+        result = []
+        if selectType != 'elem':
+            elem = self.q.findAll()
+            for e in elem:
+                _tmp = self._findAttr(e, selectType, elemName)
+                if len(_tmp) != 0:
+                    result.append(_tmp[0])
+        else:
+            _tmp = self.q.findAll(elemName)
+            if len(_tmp) != 0:
+                result = _tmp
+
+        return result
+
+    def _parseType(self, queryString):
+        if re.findall("\.([-\w]+)", queryString):
+            return ['class', queryString[1:]]
+        elif re.findall("\#([-\w]+)", queryString):
+            return ['id', queryString[1:]]
+        else:
+            return ['elem', queryString]
+
     # public
     def setHtml(self, html):
         self.q = gumbo.soup_parse(html)
@@ -53,24 +76,5 @@ class GumboQuery:
         return self._findAttr(all_elem, 'title', titleName)
 
     def query(self, queryString):
-        elem = self.q.findAll()
-        selectClass = re.findall("\.([-\w]+)", queryString)
-        selectID = re.findall("\#([-\w]+)", queryString)
-        selectElement = re.findall("([-\w]+)", queryString)
-        result = []
-
-        if len(selectClass) != 0:
-            for e in elem:
-                _tmp = self._findAttr(e, 'class', selectClass[0])
-                if len(_tmp) != 0:
-                    result.append(_tmp[0])
-        if len(selectID) != 0:
-            for e in elem:
-                _tmp = self._findAttr(e, 'id', selectID[0])
-                if len(_tmp) != 0:
-                    result.append(_tmp[0])
-        if len(selectElement) != 0:
-            _tmp = self.q.findAll(selectElement[0])
-            if len(_tmp) != 0:
-                result = _tmp
-        return result
+        sType = self._parseType(queryString)
+        return self._selector(sType[0], sType[1])

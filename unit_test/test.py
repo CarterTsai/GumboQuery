@@ -33,6 +33,11 @@ class GumboQueryTest(unittest.TestCase):
         self.assertEqual(x[0].contents[0], unicode('123'))
         self.assertEqual(x[1].contents[0], unicode('345'))
 
+    def test_query_element_children(self):
+        """unittest for test_query_element_children"""
+        x = self.q.query('div > a')
+        self.assertEqual(x[0].contents[0], unicode('a link'))
+        pass
     def test_find_class(self):
         x = self.q.findClass('h1', 'ss')
         self.assertEqual(x[0].contents[0], unicode('123'))
