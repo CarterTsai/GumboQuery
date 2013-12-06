@@ -8,12 +8,13 @@ class GumboQueryTest(unittest.TestCase):
 
     def setUp(self):
         testHtml = '<h1 class="ss cc">123</h1>' \
-                   '<div class="ss">456<div>' \
+                   '<div class="ss">456</div>' \
                    '<a> gg </a>'\
                    '<h1 class="gg" title="cc" >345</h1>' \
                    '<div class="myClass" title="good" >345</div>' \
                    '<div id="myID" title="best" >Good Idea</div>' \
-                   '<div><a href="#">a link</a></div>'
+                   '<div><a href="#">a link</a></div>' \
+                   '<div class="tt"><div id="jj">JOB</div></div>'
         self.q = GumboQuery(testHtml)
 
     def test_query_class(self):
@@ -34,10 +35,12 @@ class GumboQueryTest(unittest.TestCase):
         self.assertEqual(x[1].contents[0], unicode('345'))
 
     def test_query_element_children(self):
-        """unittest for test_query_element_children"""
         x = self.q.query('div > a')
         self.assertEqual(x[0].contents[0], unicode('a link'))
-        pass
+
+        x = self.q.query('.tt > #jj')
+        self.assertEqual(x[0].contents[0], unicode('JOB'))
+
     def test_find_class(self):
         x = self.q.findClass('h1', 'ss')
         self.assertEqual(x[0].contents[0], unicode('123'))

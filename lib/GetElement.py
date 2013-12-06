@@ -2,7 +2,7 @@ import gumbo
 import re
 import urllib2
 import types
-
+import BeautifulSoup
 
 class GumboQuery:
     def __init__(self, data):
@@ -24,25 +24,30 @@ class GumboQuery:
 
     def _findAttr(self, elem, attrName, attrValue):
         _attrs_node = []
+
         for d in elem:
+            if d.__class__ == BeautifulSoup.NavigableString:
+                d = d.parent
+
             try:
                 _attrs = dict(d.attrs)[attrName]
                 if attrValue in _attrs:
                     _attrs_node.append(d)
             except (KeyError, AttributeError):
                 pass
+
         return _attrs_node
 
-    def _selector(self, selectType, elemName):
+    def _selector(self, q, selectType, elemName):
         result = []
         if selectType != 'elem':
-            elem = self.q.findAll()
+            elem = q.findAll()
             for e in elem:
                 _tmp = self._findAttr(e, selectType, elemName)
                 if len(_tmp) != 0:
                     result.append(_tmp[0])
         else:
-            elem = self.q.findAll(elemName)
+            elem = q.findAll(elemName)
             if len(elem) != 0:
                 result = elem
 
@@ -76,5 +81,24 @@ class GumboQuery:
         return self._findAttr(all_elem, 'title', titleName)
 
     def query(self, queryString):
-        sType = self._parseType(queryString)
-        return self._selector(sType[0], sType[1])
+        qData = []
+        _next = ''
+
+        for selector in queryString.split():
+            if selector == '>':
+                _next = 'child'
+            else:
+                sType = self._parseType(selector)
+                if _next != 'child':
+                    _subData = self._selector(self.q, sType[0], sType[1])
+                    for _d in _subData:
+                        qData.append(_d)
+                else:
+                    _tmp = qData
+                    qData = []
+                    for _childElement in _tmp:
+                        _subData = self._selector(_childElement, sType[0], sType[1])
+                        for _d in _subData:
+                            qData.append(_d)
+
+        return qData
