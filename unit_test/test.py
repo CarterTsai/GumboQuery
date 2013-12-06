@@ -19,38 +19,39 @@ class GumboQueryTest(unittest.TestCase):
 
     def test_query_class(self):
         x = self.q.query('.myClass')
-        self.assertEqual(x[0].contents[0], unicode('345'))
+        self.assertEqual(x[0].text, unicode('345'))
 
     def test_query_id(self):
         x = self.q.query('#myID')
-        self.assertEqual(x[0].contents[0], unicode('Good Idea'))
+        self.assertEqual(x[0].text, unicode('Good Idea'))
 
     def test_query_element(self):
         x = self.q.query('a')
-        self.assertEqual(x[0].contents[0], unicode(' gg '))
-        self.assertEqual(x[1].contents[0], unicode('a link'))
+        self.assertEqual(x[0].text, unicode('gg'))
+        self.assertEqual(x[1].text, unicode('a link'))
 
         x = self.q.query('h1')
-        self.assertEqual(x[0].contents[0], unicode('123'))
-        self.assertEqual(x[1].contents[0], unicode('345'))
+        self.assertEqual(x[0].text, unicode('123'))
+        self.assertEqual(x[1].text, unicode('345'))
 
     def test_query_element_children(self):
         x = self.q.query('div > a')
-        self.assertEqual(x[0].contents[0], unicode('a link'))
+        self.assertEqual(x[0].text, unicode('a link'))
 
         x = self.q.query('.tt > #jj')
-        self.assertEqual(x[0].contents[0], unicode('JOB'))
+        self.assertEqual(x[0].text, unicode('JOB'))
 
     def test_find_class(self):
         x = self.q.findClass('h1', 'ss')
-        self.assertEqual(x[0].contents[0], unicode('123'))
+        self.assertEqual(x[0].text, unicode('123'))
 
     def test_find_id(self):
         x = self.q.findID('div', 'myID')
-        self.assertEqual(x[0].contents[0], unicode('Good Idea'))
+        self.assertEqual(x[0].text, unicode('Good Idea'))
+
     def test_find_title(self):
         x = self.q.findTitle('h1', 'cc')
-        self.assertEqual(x[0].contents[0], unicode('345'))
+        self.assertEqual(x[0].text, unicode('345'))
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(GumboQueryTest)
