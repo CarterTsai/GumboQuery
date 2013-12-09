@@ -29,7 +29,6 @@ class GumboQuery:
         for d in elem:
             if d.__class__ == BeautifulSoup.NavigableString:
                 d = d.parent
-
             try:
                 _attrs = dict(d.attrs)[attrName]
                 if attrValue in _attrs:
@@ -48,7 +47,7 @@ class GumboQuery:
                 if len(_tmp) != 0:
                     result.append(_tmp[0])
         elif selectType == 'attrs':
-            attrs = list(re.findall("(\w+)\[(\w+)(\W+)+(\w+)\]", elemName)[0])
+            attrs = list(re.findall("(\w+)\[(\w+)(\W+)+([-\w]+)\]", elemName)[0])
             elem = attrs[0]
             attrs_name = attrs[1]
             selectors = attrs[2]
@@ -56,15 +55,15 @@ class GumboQuery:
             _tmp = []
 
             main_elem = q.findAll(elem)
-
             if selectors == '=':
                 for e in main_elem:
-                    _tmp.extend(self._findAttr(e, attrs_name, val))
+                    _findNode = self._findAttr(e, attrs_name, val)
+                    if len(_findNode) != 0:
+                        _tmp.append(_findNode[0])
             elif selectors == '~=':
                 pass
             elif selectors == '|=':
                 pass
-
             result = _tmp
         else:
             elem = q.findAll(elemName)
@@ -78,7 +77,7 @@ class GumboQuery:
             return ['class', queryString[1:]]
         elif re.findall("\#([-\w]+)", queryString):
             return ['id', queryString[1:]]
-        elif re.findall("(\w+)(\[[(\w=~]+\])", queryString):
+        elif re.findall("[\w]+\[[\w]+[~|]?=[-\w]+\]", queryString):
             return ['attrs', queryString]
         else:
             return ['elem', queryString]
