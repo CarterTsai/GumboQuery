@@ -4,6 +4,7 @@ import urllib2
 import types
 import BeautifulSoup
 
+
 class GumboQuery:
     def __init__(self, data):
         try:
@@ -40,12 +41,31 @@ class GumboQuery:
 
     def _selector(self, q, selectType, elemName):
         result = []
-        if selectType != 'elem':
+        if selectType == 'id' or selectType == 'class':
             elem = q.findAll()
             for e in elem:
                 _tmp = self._findAttr(e, selectType, elemName)
                 if len(_tmp) != 0:
                     result.append(_tmp[0])
+        elif selectType == 'attrs':
+            attrs = list(re.findall("(\w+)\[(\w+)(\W+)+(\w+)\]", elemName)[0])
+            elem = attrs[0]
+            attrs_name = attrs[1]
+            selectors = attrs[2]
+            val = attrs[3]
+            _tmp = []
+
+            main_elem = q.findAll(elem)
+
+            if selectors == '=':
+                for e in main_elem:
+                    _tmp.extend(self._findAttr(e, attrs_name, val))
+            elif selectors == '~=':
+                pass
+            elif selectors == '|=':
+                pass
+
+            result = _tmp
         else:
             elem = q.findAll(elemName)
             if len(elem) != 0:
@@ -58,6 +78,8 @@ class GumboQuery:
             return ['class', queryString[1:]]
         elif re.findall("\#([-\w]+)", queryString):
             return ['id', queryString[1:]]
+        elif re.findall("(\w+)(\[[(\w=~]+\])", queryString):
+            return ['attrs', queryString]
         else:
             return ['elem', queryString]
 

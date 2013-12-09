@@ -41,9 +41,10 @@ class GumboQueryTest(unittest.TestCase):
         x = self.q.query('.tt > #jj')
         self.assertEqual(x[0].text, unicode('JOB'))
 
-    def test_find_class(self):
-        x = self.q.findClass('h1', 'ss')
-        self.assertEqual(x[0].text, unicode('123'))
+    def test_query_attrs(self):
+        x = self.q.query('div[title=good]')
+        self.assertEqual(x[0].text, unicode('345'))
+
 
     def test_find_id(self):
         x = self.q.findID('div', 'myID')
