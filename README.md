@@ -27,7 +27,9 @@ GumboPlus is an implementation of python of Gumbo to provide rich operate interf
     from lib.GetElement import GumboQuery
     q = GumboQuery('<div><a>123</a><div class="gg">gg</div><div id="dd">dd</div></div>')
     or 
-    q = GumboQuery('http://www.google.com');
+    q = GumboQuery('http://www.google.com')
+    or 
+    q = GumboQuery('test.html')
     
     You can do 
     q.query('div') // query element
@@ -37,8 +39,10 @@ GumboPlus is an implementation of python of Gumbo to provide rich operate interf
 
     // set url to parse 
     q.setUrl("http://www.google.com")
-    // set Html source 
+    // set HTML source 
     q.setHtml("<div><h1>333</h1></div>")
+    // set HTML file
+    q.setFile('test.html')
 
 
 ## Contact

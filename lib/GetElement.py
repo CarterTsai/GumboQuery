@@ -9,7 +9,9 @@ class GumboQuery:
     def __init__(self, data):
         try:
             if not self._isUrl(data):
-                self.setHtml(data)
+                if not self._isFile(data):
+                    self.setHtml(data)
+            self._allElem = self.q.findAll()
         except TypeError:
             pass
 
@@ -19,6 +21,15 @@ class GumboQuery:
         if not isinstance(isUrl, types.NoneType):
             response = urllib2.urlopen(url)
             self.q = gumbo.soup_parse(response.read())
+            return True
+        else:
+            return False
+
+    def _isFile(self, filename):
+        isFile = re.match('[\w]+.html', filename)
+        if not isinstance(isFile, types.NoneType):
+            content = open(filename)
+            self.q = gumbo.soup_parse(content.read())
             return True
         else:
             return False
@@ -55,7 +66,7 @@ class GumboQuery:
     def _selector(self, q, selectType, elemName):
         result = []
         if selectType == 'id' or selectType == 'class':
-            elem = q.findAll()
+            elem = self._allElem
             for e in elem:
                 _tmp = self._findAttr(e, selectType, elemName)
                 if len(_tmp) != 0:
@@ -104,6 +115,9 @@ class GumboQuery:
 
     def setUrl(self, url):
         return self._isUrl(url)
+
+    def setFile(self, filename):
+        return self._isFile(filename)
 
     def findClass(self, elem, className):
         all_elem = self.q.findAll(elem)

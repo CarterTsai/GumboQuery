@@ -4,18 +4,12 @@ import sys
 sys.path.append('../')
 from lib.GetElement import GumboQuery
 
+
 class GumboQueryTest(unittest.TestCase):
 
     def setUp(self):
-        testHtml = '<h1 class="ss cc">123</h1>' \
-                   '<div class="ss">456</div>' \
-                   '<a> gg </a>'\
-                   '<h1 class="gg" title="cc" >345</h1>' \
-                   '<div class="myClass" title="good" >345</div>' \
-                   '<div id="myID" title="best" >Good Idea</div>' \
-                   '<div><a href="#">a link</a></div>' \
-                   '<div class="tt"><div id="jj">JOB</div></div>'
-        self.q = GumboQuery(testHtml)
+
+        self.q = GumboQuery('test.html')
 
     def test_query_class(self):
         x = self.q.query('.myClass')
