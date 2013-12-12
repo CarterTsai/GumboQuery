@@ -23,6 +23,20 @@ class GumboQuery:
         else:
             return False
 
+    def _findElemAttr(self, elem, attrName, attrValue):
+        _attrs_node = []
+
+        if elem.__class__ == BeautifulSoup.NavigableString:
+                elem = elem.parent
+        try:
+            _attrs = dict(elem.attrs)[attrName]
+            if attrValue in _attrs:
+                _attrs_node.append(elem)
+        except (KeyError, AttributeError):
+            pass
+
+        return _attrs_node
+
     def _findAttr(self, elem, attrName, attrValue):
         _attrs_node = []
 
@@ -55,9 +69,11 @@ class GumboQuery:
             _tmp = []
 
             main_elem = q.findAll(elem)
+
+
             if selectors == '=':
                 for e in main_elem:
-                    _findNode = self._findAttr(e, attrs_name, val)
+                    _findNode = self._findElemAttr(e, attrs_name, val)
                     if len(_findNode) != 0:
                         _tmp.append(_findNode[0])
             elif selectors == '~=':
