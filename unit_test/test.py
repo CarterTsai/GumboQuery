@@ -39,6 +39,18 @@ class GumboQueryTest(unittest.TestCase):
         x = self.q.query('div[title=good]')
         self.assertEqual(x[0].text, unicode('345'))
 
+    def test_query_in_depth(self):
+        x = self.q.query('table > td > .dt')
+        self.assertEqual(x[0].text, unicode('2014/01/27'))
+
+        x = self.q.query('table > td > .rt')
+        self.assertEqual(x[0].text, unicode('12.5400'))
+
+        x = self.q.query('table > tr > th')
+        self.assertEqual(x[0].text, unicode('Title'))
+
+        x = self.q.query('table > tr > th')
+        self.assertEqual(x[1].text, unicode('Item'))
 
     def test_find_id(self):
         x = self.q.findID('div', 'myID')

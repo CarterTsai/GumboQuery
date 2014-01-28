@@ -63,10 +63,13 @@ class GumboQuery:
 
         return _attrs_node
 
-    def _selector(self, q, selectType, elemName):
+    def _selector(self, allElem , q, selectType, elemName):
         result = []
         if selectType == 'id' or selectType == 'class':
-            elem = self._allElem
+            if allElem == 'top':
+                elem = self._allElem
+            else:
+                elem = allElem
             for e in elem:
                 _tmp = self._findAttr(e, selectType, elemName)
                 if len(_tmp) != 0:
@@ -141,15 +144,20 @@ class GumboQuery:
             else:
                 sType = self._parseType(selector)
                 if _next != 'child':
-                    _subData = self._selector(self.q, sType[0], sType[1])
+                    _subData = self._selector( 'top',self.q, sType[0], sType[1])
                     for _d in _subData:
                         qData.append(_d)
                 else:
                     _tmp = qData
                     qData = []
                     for _childElement in _tmp:
-                        _subData = self._selector(_childElement, sType[0], sType[1])
+                     #   print "&&&&&&&&&&&&&& > ", _childElement
+                     #   print "************** > ", _tmp
+                     #   print "type1, type2", sType[0], sType[1]
+                        _subData = self._selector( [_childElement] , _childElement, sType[0], sType[1])
+                     #   print "xxxxxxxxxxxxxx > ", _subData
                         for _d in _subData:
                             qData.append(_d)
+       #                 print "gggggggggggggg > ", qData
 
         return qData
