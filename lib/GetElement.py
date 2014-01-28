@@ -151,13 +151,7 @@ class GumboQuery:
                     _tmp = qData
                     qData = []
                     for _childElement in _tmp:
-                     #   print "&&&&&&&&&&&&&& > ", _childElement
-                     #   print "************** > ", _tmp
-                     #   print "type1, type2", sType[0], sType[1]
                         _subData = self._selector( [_childElement] , _childElement, sType[0], sType[1])
-                     #   print "xxxxxxxxxxxxxx > ", _subData
                         for _d in _subData:
                             qData.append(_d)
-       #                 print "gggggggggggggg > ", qData
-
         return qData
