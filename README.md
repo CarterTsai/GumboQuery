@@ -1,7 +1,6 @@
-
 GumboQuery
 ------------
-GumboPlus is an implementation of python of Gumbo to provide rich operate interface.
+GumboPlus is an implementation of python of Gumbo to provide rich operate interface for parse html5 tag data.
 
 ## Requirements
 * [Gumbo-parser][1]
